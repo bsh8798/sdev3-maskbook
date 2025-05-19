@@ -4,16 +4,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Layout from './_components/layout';
+import { Post } from '@/lib/generated/prisma';
+import useSWR from 'swr';
+import { formatDate } from '@/lib/utils';
 
-const popularPosts = [
-  { id:1, title: '오늘 점심 뭐 먹지..', date: '25.04.28' },
-  { id:2, title: '이따 비온다고 함', date: '25.04.28' },
-  { id:3, title: '비트코인 떡상 ㄷㄷ', date: '25.04.28' },
-  { id:4, title: '고민 있음', date: '25.04.28' },
-  { id:5, title: '여행 어디로 갈까?', date: '25.04.28' },
-];
+interface PostResponse {
+  ok:boolean;
+  postList: Post[];
+}
 
 export default function Home() {
+
+  const {data, error, isLoading} = useSWR<PostResponse>('/api/post')  
+
   return (
     <Layout>
         {/* ------- 좌측 영역 ------- */}
@@ -33,11 +36,11 @@ export default function Home() {
             <Separator />
 
             <List>
-              {popularPosts.map(({ id, title, date }) => (
+              {!isLoading && !error && data?.postList.map(({id, title, createdAt}) => (
                 <SLink href={`/post/${id}`} key={id}>
                   <ListRow>
                     <span>{title}</span>
-                    <span>{date}</span>
+                    <span>{formatDate(createdAt)}</span>
                   </ListRow>
                 </SLink>
               ))}
