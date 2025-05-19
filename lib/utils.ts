@@ -1,4 +1,4 @@
-export const formatDate = (raw : Date) => {
+export const formatDate = (raw : Date | undefined) => {
     if(!raw) return '';
     const d = new Date(raw);
     return `${d.getFullYear().toString().slice(2)}.
