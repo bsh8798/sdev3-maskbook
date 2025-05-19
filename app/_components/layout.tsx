@@ -1,5 +1,6 @@
 'use client';
 
+import Link from "next/link";
 import styled from "styled-components";
 
 interface LayoutProps {
@@ -10,8 +11,12 @@ export default function Layout({children}: LayoutProps) {
     return (
         <>
         <TopBar>
-            <Logo>MaskBook</Logo>
-            <SignIn>Sign In</SignIn>
+            <Logo>
+              <SLink href="/">MaskBook</SLink>
+            </Logo>
+            <SignIn>
+              <SLink href="/sign-in">Sign In</SLink>
+            </SignIn>
         </TopBar>
         <Main>
             {children}
@@ -67,3 +72,8 @@ const Main = styled.main`
   margin-top: 120px;
   padding: 0 2rem;
 `;
+
+const SLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`
